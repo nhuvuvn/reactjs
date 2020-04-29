@@ -53,12 +53,13 @@
   "profile": {
     "id": "some-unique-id",
     "name": "Mr Uong",
-    "title": "Sr. Software Engineerss",
+    "title": "Sr. Software Engineers",
     "roles": [
-      "Developer",
-      "Technical Architect"
+      "QC",
+      "BA",
+      "DEV"
     ],
-    "email": "someemail@gmail.com",
+    "email": "emailtest@gmail.com",
     "phone": "01234234232"
   }
 }

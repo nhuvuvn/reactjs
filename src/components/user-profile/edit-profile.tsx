@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Form, Input, Breadcrumb } from 'antd';
+import { Button, Form, Input, Breadcrumb, Select } from 'antd';
 import { Profile } from '../../models/profile';
 import { fetchData } from '../../datasource/fetch-data';
 import { AnalysisData } from '../home/analysis';
 import { UserProfile } from './user-profile';
 import { Layout } from 'antd';
+import { Redirect } from 'react-router-dom';
 
 const { Sider, Content } = Layout;
-
 interface FormEditProps {
   initialValues: Profile;
   onFinish: (formValue: any) => void;
@@ -20,7 +20,9 @@ function FormEdit(props: FormEditProps) {
   const tailLayout = {
     wrapperCol: { offset: 4, span: 16 },
   };
-
+  function handleChange(value: string) {
+    
+  }
   return (
     <Form
       {...layout}
@@ -41,7 +43,8 @@ function FormEdit(props: FormEditProps) {
       </Form.Item>
 
       <Form.Item label='Role' name='roles'>
-        <Input />
+        <Select mode="tags" style={{ width: '100%' }} placeholder="roles" onChange={handleChange}>
+        </Select>
       </Form.Item>
 
       <Form.Item label='Email' name='email'>
@@ -62,6 +65,9 @@ function FormEdit(props: FormEditProps) {
 }
 
 export function EditProfile() {
+
+  const [redirect, setRedirect] = useState<boolean>(false);
+
   const [profile, setProfile] = useState<Profile | null>(null);
   const [saveState, setSaveState] = useState<{
     id: string;
@@ -84,14 +90,28 @@ export function EditProfile() {
         return;
       }
       try {
+        // convert data before update
+        let jsonData = JSON.parse(saveState.body);
+        let rolesLength = jsonData.roles.length;
+        let rolesObj = [];
+        if (rolesLength) {
+          for (const value of jsonData.roles) {
+            rolesObj.push(value);
+          }
+        } else {
+          rolesObj.push(jsonData.roles);
+        }
+        jsonData.roles = rolesObj;
         await fetchData('http://localhost:3000/profile', {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json; charset=utf-8',
           },
-          body: saveState.body,
+          body: JSON.stringify(jsonData),
         });
         // redirect TODO
+        setRedirect(true);
+
       } catch (e) {
         console.log(e);
       }
@@ -107,6 +127,7 @@ export function EditProfile() {
   }
   return (
     <>
+      {redirect ? <Redirect to="/" /> : null}
       <AnalysisData />
       <div className="ant-layout-content">
         <Breadcrumb>
