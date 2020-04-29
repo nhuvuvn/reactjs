@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, Breadcrumb } from 'antd';
 import { Profile } from '../../models/profile';
 import { fetchData } from '../../datasource/fetch-data';
+import { AnalysisData } from '../home/analysis';
+import { UserProfile } from './user-profile';
+import { Layout } from 'antd';
+
+const { Sider, Content } = Layout;
 
 interface FormEditProps {
   initialValues: Profile;
@@ -9,11 +14,11 @@ interface FormEditProps {
 }
 function FormEdit(props: FormEditProps) {
   const layout = {
-    labelCol: { span: 8 },
+    labelCol: { span: 4 },
     wrapperCol: { span: 16 },
   };
   const tailLayout = {
-    wrapperCol: { offset: 8, span: 16 },
+    wrapperCol: { offset: 4, span: 16 },
   };
 
   return (
@@ -32,6 +37,18 @@ function FormEdit(props: FormEditProps) {
       </Form.Item>
 
       <Form.Item label='Title' name='title'>
+        <Input />
+      </Form.Item>
+
+      <Form.Item label='Role' name='roles'>
+        <Input />
+      </Form.Item>
+
+      <Form.Item label='Email' name='email'>
+        <Input />
+      </Form.Item>
+
+      <Form.Item label='Phone' name='phone'>
         <Input />
       </Form.Item>
 
@@ -90,17 +107,36 @@ export function EditProfile() {
   }
   return (
     <>
-      <div>Edit Profile</div>
-      {profile ? (
-        <div>
-          <FormEdit
-            initialValues={profile}
-            onFinish={onFinish}
-          />
-        </div>
-      ) : (
-          <p>Loading...</p>
-        )}
+      <AnalysisData />
+      <div className="ant-layout-content">
+        <Breadcrumb>
+          <Breadcrumb.Item>
+            <a href="/">Home</a>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>Transaction detail</Breadcrumb.Item>
+        </Breadcrumb>
+      </div>
+      <Layout>
+        <Layout>
+          <Content>
+            <div className='datatable'>
+              {profile ? (
+                <FormEdit
+                  initialValues={profile}
+                  onFinish={onFinish}
+                />
+              ) : (
+                  <p>Loading...</p>
+                )}
+            </div>
+          </Content>
+          <Sider>
+            <div className='profile'>
+              <UserProfile />
+            </div>
+          </Sider>
+        </Layout>
+      </Layout>
     </>
   );
 }

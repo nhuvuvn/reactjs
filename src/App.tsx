@@ -4,6 +4,7 @@ import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Home } from './components/home/home';
 import { EditProfile } from './components/user-profile/edit-profile';
+import { OpenTransaction } from './components/transaction/open-transaction';
 
 export function App() {
   return (
@@ -17,6 +18,8 @@ export function App() {
           </Route>
           <Route path="/edit-profile">
             <EditProfile />
+          </Route>
+          <Route path="/open-transaction/:id" render={(props) => <OpenTransaction {...props} />}>
           </Route>
         </Switch>
       </div>

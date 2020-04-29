@@ -45,7 +45,7 @@ const columns = [
         dataIndex: 'key',
         render: (key: string) => (
             <span>
-                <a href={'user/' + key}>Open</a>
+                <a href={'open-transaction/' + key}>Open</a>
             </span>
         ),
     },

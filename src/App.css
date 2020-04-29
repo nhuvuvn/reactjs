@@ -1,13 +1,15 @@
-.ant-layout-header, .ant-layout-sider{
+.ant-layout-content, .ant-layout-sider{
+    margin: 10px;
+}
+.ant-layout-sider{
     background: #FAFAFA;
 }
-.ant-layout-header{
-    margin-bottom: 5px;
-}
-.ant-layout-sider .profile {
+.ant-layout-sider .profile, .site-statistic-demo-card {
     padding: 10px;
 }
 .site-statistic-demo-card {
     background: #ececec;
-    padding: 30px;
+}
+.ant-alert {
+    margin: 10px 0;
 }

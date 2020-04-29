@@ -1,54 +1,24 @@
-import React from 'react';
-import { Button, Avatar  } from 'antd';
+import React, { useState, useEffect } from 'react';
 import { Profile } from '../../models/profile';
-import { useHistory } from 'react-router-dom';
+import { fetchData } from '../../datasource/fetch-data';
+import { ShowUserProfile } from './show-profile';
 
-const defaultAvatar =
-  'https://upload.wikimedia.org/wikipedia/en/2/21/Web_of_Spider-Man_Vol_1_129-1.png';
-
-interface Props {
-  profile: Profile;
-}
-
-export function UserProfile(props: Props) {
-  const { profile } = props;
-  const history = useHistory();
-
-  function editProfile() {
-    history.push('/edit-profile');
-  }
+export function UserProfile() {
+  // get profile
+  const [profile, setProfile] = useState<Profile | null>(null);
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await fetchData('http://localhost:3000/profile');
+        setProfile(data);
+      } catch (e) {
+        console.log(e);
+      }
+    })();
+  }, []);
   return (
     <div>
-      <div className='user-avatar'>
-      <Avatar size={150} src={profile.avatar ? profile.avatar : defaultAvatar} />
-      </div>
-      <div>
-        <h3>{profile.name}</h3>
-        <h5>{profile.title}</h5>
-      </div>
-      <div>
-        <Button type='primary' onClick={editProfile}>
-          Edit profile
-        </Button>
-      </div>
-      <div>
-        <div className='roles'>
-          <h4>Role</h4>
-          <p>{profile.roles.join()}</p>
-        </div>
-        <div className='email'>
-          <h4>Email</h4>
-          <p>{profile.email}</p>
-        </div>
-        <div className='phone'>
-          <h4>Phone</h4>
-          <p>{profile.phone}</p>
-        </div>
-        <div className='bio'>
-          <h4>Bio</h4>
-          <p>{profile.bio}</p>
-        </div>
-      </div>
+      {profile ? <ShowUserProfile profile={profile} /> : null}
     </div>
   );
 }
